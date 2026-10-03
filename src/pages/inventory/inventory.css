@@ -1,0 +1,307 @@
+.inventory-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.inventory-toolbar__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inventory-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.inventory-toolbar__search,
+.inventory-toolbar__filters select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.inventory-toolbar__search {
+  min-width: 220px;
+}
+
+.inventory-toolbar__add {
+  flex-shrink: 0;
+}
+
+/* Reset / Refresh: plain outlined buttons, not primary-colored */
+.inventory-toolbar__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.inventory-toolbar__icon-btn:hover {
+  background: var(--hover);
+}
+
+.inventory-toolbar__icon-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* List / Grid view toggle */
+.inventory-view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.inventory-view-toggle button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.inventory-view-toggle button:hover {
+  background: var(--hover);
+}
+
+.inventory-view-toggle button.active {
+  background: var(--color-secondary);
+  color: var(--color-on-secondary);
+  opacity: 1;
+}
+
+.inventory-view-toggle button + button {
+  border-left: 1px solid var(--border);
+}
+
+.inventory-empty {
+  margin: 1rem 0 0;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text);
+  opacity: 0.6;
+}
+
+/* Row/card action buttons (view / edit / delete) */
+.gem-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.gem-actions__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+.gem-actions__btn:hover {
+  background: var(--hover);
+  opacity: 1;
+}
+
+.gem-actions__btn--danger:hover {
+  background: color-mix(in srgb, #dc2626 14%, var(--surface));
+  color: #dc2626;
+  opacity: 1;
+}
+
+/* Grid (card) view */
+.gem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.gem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.gem-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.gem-card__sku {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.gem-card__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.gem-card__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.75rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.gem-card__details dt {
+  color: var(--text);
+  opacity: 0.6;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.gem-card__details dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.gem-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.gem-card__price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pagination */
+.inventory-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.inventory-pagination__size {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.inventory-pagination__size select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.inventory-pagination__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.inventory-pagination__nav button {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+}
+
+.inventory-pagination__nav button:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.inventory-pagination__nav button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Edit form */
+.gem-edit {
+  max-width: 480px;
+}
+
+.gem-edit__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.gem-edit__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.gem-edit__form input,
+.gem-edit__form select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.gem-edit__error {
+  color: #dc2626;
+  margin: 0;
+}
+
+.gem-edit__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.secondary-link {
+  color: var(--text);
+  opacity: 0.7;
+}

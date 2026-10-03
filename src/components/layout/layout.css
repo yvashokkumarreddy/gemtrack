@@ -1,0 +1,325 @@
+.app-shell {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Top bar */
+.app-header {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header__left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.app-header__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.app-header__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.app-header__icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  opacity: 0.75;
+}
+
+.app-header__icon-btn:hover {
+  background: var(--hover);
+  opacity: 1;
+}
+
+.app-header__badge {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 1.5px solid var(--surface);
+}
+
+.app-header__avatar-wrap {
+  position: relative;
+}
+
+.app-header__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--hover);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.app-header__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 10;
+  min-width: 160px;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-header__menu-user {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.app-header__menu button {
+  background: var(--color-secondary);
+}
+
+.app-header__menu button:hover {
+  background: var(--color-secondary-hover);
+}
+
+/* Sidebar: full height from the very top, to the left of the header */
+.app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 0.75rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: width 0.15s ease, padding 0.15s ease;
+}
+
+/* Collapsed state shrinks to an icon-only rail rather than vanishing --
+   the collapse button lives inside the sidebar now, so it must stay
+   reachable to expand it again. */
+.app-sidebar--collapsed {
+  width: 64px;
+  padding: 0.75rem 0.5rem;
+}
+
+.app-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-sidebar--collapsed .app-sidebar__brand {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.app-sidebar__brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: var(--color-on-brand);
+  flex-shrink: 0;
+}
+
+.app-sidebar__brand-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-sidebar__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
+.app-sidebar__collapse-btn:hover {
+  background: var(--hover);
+  opacity: 1;
+}
+
+.app-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.app-sidebar--collapsed .app-sidebar__list {
+  align-items: center;
+}
+
+/* Group header (the button that opens and closes a group).
+   It must override the global primary-colored button style. */
+.app-sidebar__group-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  text-align: left;
+}
+
+.app-sidebar__group-toggle:hover {
+  background: var(--hover);
+}
+
+/* Highlighted when the page you're on belongs to this group */
+.app-sidebar__group-toggle--active {
+  color: var(--color-secondary);
+}
+
+.app-sidebar__group-icon,
+.app-sidebar__link-icon {
+  flex-shrink: 0;
+}
+
+.app-sidebar__group-label {
+  flex: 1;
+}
+
+.app-sidebar__chevron {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.app-sidebar__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* Pages inside a group */
+.app-sidebar__sublist {
+  list-style: none;
+  margin: 0.25rem 0 0.5rem 1.4rem;
+  padding: 0 0 0 0.5rem;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.app-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.app-sidebar__link:hover {
+  background: var(--hover);
+}
+
+.app-sidebar__link--active,
+.app-sidebar__link--active:hover {
+  background: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+/* Collapsed rail: no group button, just centered icon links */
+.app-sidebar__sublist--collapsed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.app-sidebar__sublist--collapsed .app-sidebar__link {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+
+.app-content {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem;
+  overflow: auto;
+}
