@@ -1,41 +1,38 @@
-import { useState } from 'react'
 import { Eye, Pencil, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { deleteGem } from '@/services/gemService'
+import { ROUTES } from '@/constants/routes'
+import { useDeleteGem } from '@/queries/useGems'
 import type { GemItem } from '@/types/gem'
 
 interface GemActionsProps {
   item: GemItem
-  basePath: string
   canWrite: boolean
-  onDeleted: (id: string) => void
 }
 
-export function GemActions({ item, basePath, canWrite, onDeleted }: GemActionsProps) {
-  const [deleting, setDeleting] = useState(false)
+export function GemActions({ item, canWrite }: GemActionsProps) {
+  // On success the mutation refreshes the lists by itself and shows a toast;
+  // on failure the API client shows the error toast. Nothing to wire up here.
+  const deleteGem = useDeleteGem()
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!window.confirm(`Delete ${item.sku} - ${item.name}? This can't be undone.`)) return
-    setDeleting(true)
-    try {
-      await deleteGem(item.id)
-      onDeleted(item.id)
-    } catch (err) {
-      console.error('Error deleting gem:', err)
-      window.alert('Failed to delete gem. Please try again.')
-      setDeleting(false)
-    }
+    deleteGem.mutate(item.id)
   }
 
   return (
     <div className="gem-actions">
-      <Link to={`${basePath}/${item.id}`} className="gem-actions__btn" aria-label="View gem details" title="View">
+      <Link
+        to={ROUTES.inventory.gems.detail(item.id)}
+        className="gem-actions__btn"
+        aria-label="View gem details"
+        title="View"
+      >
         <Eye size={16} />
       </Link>
       {canWrite && (
         <>
           <Link
-            to={`${basePath}/${item.id}/edit`}
+            to={ROUTES.inventory.gems.edit(item.id)}
             className="gem-actions__btn"
             aria-label="Edit gem"
             title="Edit"
@@ -48,7 +45,7 @@ export function GemActions({ item, basePath, canWrite, onDeleted }: GemActionsPr
             aria-label="Delete gem"
             title="Delete"
             onClick={handleDelete}
-            disabled={deleting}
+            disabled={deleteGem.isPending}
           >
             <Trash2 size={16} />
           </button>

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/constants/routes'
+import { startSession } from '@/lib/session'
 import { login } from '@/services/Authservice'
-import { getUser, saveToken } from '@/utils/auth'
+import { getUser } from '@/utils/auth'
 import { getErrorMessage } from '@/utils/errors'
-import './login.css'
+import './Login.css'
 
 // Demo helpers so you can switch users quickly. Remove for a real app.
 const DEMO_USERS = [
@@ -20,15 +22,15 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
 
   // Already signed in: skip the login screen
-  if (getUser()) return <Navigate to="/inventory/gems" replace />
+  if (getUser()) return <Navigate to={ROUTES.inventory.gems.list} replace />
 
   const handleSubmit = async () => {
     setError(null)
     setSubmitting(true)
     try {
       const token = await login({ email, password })
-      saveToken(token)
-      navigate('/inventory/gems', { replace: true })
+      startSession(token)
+      void navigate(ROUTES.inventory.gems.list, { replace: true })
     } catch (err) {
       setError(getErrorMessage(err, 'Login failed'))
     } finally {

@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import { ROUTES } from '@/constants/routes'
+import { PageLoader } from '@/components/common/PageStatus'
 import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { getUser } from '@/utils/auth'
@@ -10,7 +12,7 @@ export function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   // Logged-out users never see the shell, they go straight to login
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to={ROUTES.login} replace />
 
   return (
     <div className="app-shell">
@@ -21,7 +23,9 @@ export function AppLayout() {
       <div className="app-main">
         <Header user={user} />
         <main className="app-content">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>
