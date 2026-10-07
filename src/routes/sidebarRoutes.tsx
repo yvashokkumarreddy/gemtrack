@@ -1,5 +1,6 @@
 import { Gem, Package, type LucideIcon } from 'lucide-react'
 import { MODULES, PERMISSION, type ModuleKey } from '@/constants/permissions'
+import { ROUTES } from '@/constants/routes'
 import type { PermissionLevel } from '@/types/auth'
 
 export interface SidebarChild {
@@ -26,14 +27,24 @@ export const sidebarRoutes: SidebarGroup[] = [
     children: [
       {
         label: 'Gem Inventory',
-        path: '/inventory/gems',
+        path: ROUTES.inventory.gems.list,
         icon: Gem,
         module: MODULES.INVENTORY,
         minLevel: PERMISSION.READ,
       },
-      // Week 3: add the wizard page here
-      // { label: 'Add gem', path: '/inventory/new', icon: Plus,
-      //   module: MODULES.INVENTORY, minLevel: PERMISSION.WRITE },
+    ],
+  },
+  {
+    label: 'Archive Inventory',
+    icon: Package,
+    children: [
+      {
+        label: 'Archived Gems',
+        path: ROUTES.inventory.gems.archivelist,
+        icon: Gem,
+        module: MODULES.ARCHIVE,
+        minLevel: PERMISSION.READ,
+      },
     ],
   },
 ]

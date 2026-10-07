@@ -3,7 +3,8 @@ import { Bell, LayoutGrid, Moon, ScanLine, Sun } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { sidebarRoutes } from '@/routes/sidebarRoutes'
 import type { AuthUser } from '@/types/auth'
-import { clearToken } from '@/utils/auth'
+import { ROUTES } from '@/constants/routes'
+import { endSession } from '@/lib/session'
 import { getEffectiveTheme, toggleTheme } from '@/utils/theme'
 
 interface HeaderProps {
@@ -38,8 +39,8 @@ export function Header({ user }: HeaderProps) {
   }, [menuOpen])
 
   const handleLogout = () => {
-    clearToken()
-    navigate('/login', { replace: true })
+    endSession()
+    void navigate(ROUTES.login, { replace: true })
   }
 
   const initial = user.name.trim().charAt(0).toUpperCase()
