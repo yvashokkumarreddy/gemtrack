@@ -12,7 +12,8 @@
       "cost": 5000,
       "price": 7500,
       "status": "in_stock",
-      "stockType": "single"
+      "stockType": "single",
+      "archived": false
     },
     {
       "id": "2",
@@ -26,7 +27,8 @@
       "cost": 3200,
       "price": 4800,
       "status": "sold",
-      "stockType": "parcel"
+      "stockType": "parcel",
+      "archived": true
     },
     {
       "id": "3",
@@ -40,7 +42,8 @@
       "cost": 9800,
       "price": 14200,
       "status": "on_memo",
-      "stockType": "set"
+      "stockType": "set",
+      "archived": false
     },
     {
       "id": "4",
@@ -54,7 +57,8 @@
       "cost": 21000,
       "price": 29500,
       "status": "in_stock",
-      "stockType": "pair"
+      "stockType": "pair",
+      "archived": false
     },
     {
       "id": "5",
@@ -68,7 +72,8 @@
       "cost": 2400,
       "price": 3600,
       "status": "in_stock",
-      "stockType": "single"
+      "stockType": "single",
+      "archived": false
     },
     {
       "id": "6",
@@ -82,7 +87,8 @@
       "cost": 1500,
       "price": 2300,
       "status": "sold",
-      "stockType": "parcel"
+      "stockType": "parcel",
+      "archived": true
     },
     {
       "id": "7",
@@ -96,7 +102,8 @@
       "cost": 3900,
       "price": 5700,
       "status": "in_stock",
-      "stockType": "set"
+      "stockType": "set",
+      "archived": false
     },
     {
       "id": "8",
@@ -110,7 +117,8 @@
       "cost": 13500,
       "price": 19000,
       "status": "on_memo",
-      "stockType": "pair"
+      "stockType": "pair",
+      "archived": false
     },
     {
       "id": "9",
@@ -124,7 +132,8 @@
       "cost": 18000,
       "price": 26000,
       "status": "in_stock",
-      "stockType": "single"
+      "stockType": "single",
+      "archived": false
     },
     {
       "id": "10",
@@ -138,7 +147,8 @@
       "cost": 7200,
       "price": 10800,
       "status": "sold",
-      "stockType": "parcel"
+      "stockType": "parcel",
+      "archived": true
     },
     {
       "id": "11",
@@ -152,7 +162,8 @@
       "cost": 8800,
       "price": 12900,
       "status": "in_stock",
-      "stockType": "set"
+      "stockType": "set",
+      "archived": false
     },
     {
       "id": "12",
@@ -166,7 +177,8 @@
       "cost": 11000,
       "price": 16500,
       "status": "on_memo",
-      "stockType": "pair"
+      "stockType": "pair",
+      "archived": false
     },
     {
       "id": "13",
@@ -180,7 +192,8 @@
       "cost": 2800,
       "price": 4400,
       "status": "in_stock",
-      "stockType": "single"
+      "stockType": "single",
+      "archived": false
     },
     {
       "id": "14",
@@ -194,7 +207,8 @@
       "cost": 9500,
       "price": 14000,
       "status": "in_stock",
-      "stockType": "parcel"
+      "stockType": "parcel",
+      "archived": false
     },
     {
       "id": "15",
@@ -208,7 +222,8 @@
       "cost": 1800,
       "price": 2900,
       "status": "sold",
-      "stockType": "set"
+      "stockType": "set",
+      "archived": true
     },
     {
       "id": "16",
@@ -222,7 +237,8 @@
       "cost": 8400,
       "price": 12300,
       "status": "in_stock",
-      "stockType": "pair"
+      "stockType": "pair",
+      "archived": false
     },
     {
       "id": "17",
@@ -236,7 +252,8 @@
       "cost": 900,
       "price": 1450,
       "status": "sold",
-      "stockType": "single"
+      "stockType": "single",
+      "archived": true
     },
     {
       "id": "18",
@@ -250,7 +267,8 @@
       "cost": 8700,
       "price": 12600,
       "status": "on_memo",
-      "stockType": "parcel"
+      "stockType": "parcel",
+      "archived": false
     },
     {
       "id": "19",
@@ -264,7 +282,8 @@
       "cost": 3300,
       "price": 5200,
       "status": "in_stock",
-      "stockType": "set"
+      "stockType": "set",
+      "archived": false
     },
     {
       "id": "20",
@@ -278,7 +297,8 @@
       "cost": 14500,
       "price": 21000,
       "status": "in_stock",
-      "stockType": "pair"
+      "stockType": "pair",
+      "archived": false
     }
   ]
 }

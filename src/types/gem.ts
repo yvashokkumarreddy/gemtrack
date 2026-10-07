@@ -1,6 +1,6 @@
-export type GemStatus = 'in_stock' | 'sold' | 'on_memo'
-export type GemOwnership = 'owned' | 'memo_in' | 'partner'
-export type GemStockType = 'parcel' | 'single' | 'set' | 'pair'
+import type { GemOwnership, GemStatus, GemStockType } from '@/constants/gemOptions'
+
+export type { GemOwnership, GemStatus, GemStockType }
 
 export interface GemItem {
   id: string
@@ -9,29 +9,33 @@ export interface GemItem {
   caratWeight: number
   color: string
   clarity: string
-  // The backend doesn't store or return these yet -- added here for the
-  // UI, so they must stay optional until the API catches up.
-  ownership?: GemOwnership
-  stockType?: GemStockType
+  ownership: GemOwnership
+  stockType: GemStockType
   cut: string
   cost: number
   price: number
   status: GemStatus
+  archived: boolean
 }
 
-// Fields the backend's /gems endpoint actually accepts (confirmed against
-// its validation errors: no ownership/stockType support yet).
-export type EditableGemFields = Pick<
-  GemItem,
-  'sku' | 'name' | 'caratWeight' | 'color' | 'clarity' | 'cut' | 'cost' | 'price' | 'status'
->
-
-export type CreateGemInput = Omit<GemItem, 'id'>
-export type UpdateGemInput = Partial<EditableGemFields>
+export type CreateGemInput = Omit<GemItem, 'id' | 'archived'>
+export type UpdateGemInput = Partial<CreateGemInput>
 export type GemListItem = Pick<
   GemItem,
   'id' | 'sku' | 'name' | 'price' | 'status' | 'ownership' | 'stockType'
 >
+
+// What the list endpoint accepts. The server does the filtering and paging.
+export interface GemListParams {
+  page: number
+  limit: number
+  q?: string
+  status?: GemStatus
+  ownership?: GemOwnership
+  stockType?: GemStockType
+  sort?: string
+  archived?: boolean
+}
 
 export interface Paginated<T> {
   data: T[]

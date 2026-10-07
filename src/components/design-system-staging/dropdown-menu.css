@@ -1,0 +1,69 @@
+/* The "..." button. It must override the global primary-colored button style. */
+.dropdown-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.dropdown-menu__trigger:hover,
+.dropdown-menu__trigger[aria-expanded='true'] {
+  background: var(--hover);
+}
+
+.dropdown-menu__panel {
+  position: fixed;
+  z-index: 1000;
+  min-width: 190px;
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.dropdown-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  text-decoration: none;
+}
+
+.dropdown-menu__item:hover,
+.dropdown-menu__item:focus-visible {
+  background: var(--hover);
+}
+
+.dropdown-menu__item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-menu__item--danger,
+.dropdown-menu__item--danger:hover,
+.dropdown-menu__item--danger:focus-visible {
+  color: var(--color-danger);
+}
+
+.dropdown-menu__item--danger:hover,
+.dropdown-menu__item--danger:focus-visible {
+  background: color-mix(in srgb, var(--color-danger) 12%, var(--surface));
+}

@@ -1,4 +1,4 @@
-import type { ModuleKey } from '@/constants/permissions'
+import { MODULES, type ModuleKey } from '@/constants/permissions'
 import type { AuthUser, PermissionLevel } from '@/types/auth'
 
 const TOKEN_KEY = 'ims_token'
@@ -81,7 +81,19 @@ export function getUser(): AuthUser | null {
 }
 
 export function getPermission(module: ModuleKey): PermissionLevel {
-  return getUser()?.permissions[module] ?? 0
+  const permissions = getUser()?.permissions
+  if (!permissions) return 0
+
+  const level = permissions[module]
+  if (level !== undefined) return level
+
+  // The Archive module is a filtered view over the same gems as Inventory,
+  // not a separate business capability yet. Until the backend issues its
+  // own `archive` permission, fall back to whatever the user can already
+  // do in Inventory, so the module isn't hidden for every existing token.
+  if (module === MODULES.ARCHIVE) return permissions[MODULES.INVENTORY] ?? 0
+
+  return 0
 }
 
 export function hasPermission(module: ModuleKey, minLevel: PermissionLevel): boolean {

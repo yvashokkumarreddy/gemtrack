@@ -1,65 +1,70 @@
-import { useEffect, useState } from 'react'
+import { isAxiosError } from 'axios'
+import { Pencil } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { ownershipLabel, stockTypeLabel } from '@/constants/gemLabels'
+import { PageError, PageLoader } from '@/components/common/PageStatus'
+import { PageHeader } from '@/components/common/PageHeader'
+import { OWNERSHIP_LABELS, STATUS_LABELS, STOCK_TYPE_LABELS } from '@/constants/gemLabels'
 import { MODULES, PERMISSION } from '@/constants/permissions'
-import { getGem } from '@/services/gemService'
-import type { GemItem } from '@/types/gem'
+import { ROUTES } from '@/constants/routes'
+import { useGem } from '@/queries/useGems'
 import { hasPermission } from '@/utils/auth'
-
-const BASE_PATH = '/inventory/gems'
+import { formatCurrency } from '@/utils/currency'
+import './inventory.css'
 
 export function InventoryDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const [item, setItem] = useState<GemItem | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data: item, isPending, isError, error, refetch } = useGem(id)
 
-  useEffect(() => {
-    if (!id) return
-    let ignore = false
+  if (!id) return <PageError message="Invalid gem id" />
+  if (isPending) return <PageLoader />
+  if (isError) {
+    const notFound = isAxiosError(error) && error.response?.status === 404
+    return (
+      <PageError
+        message={notFound ? 'Gem not found' : 'Failed to load gem'}
+        onRetry={notFound ? undefined : () => void refetch()}
+      />
+    )
+  }
 
-    const fetchGem = async () => {
-      try {
-        const gem = await getGem(id)
-        if (!ignore) setItem(gem)
-      } catch (err) {
-        if (!ignore) setError('Failed to fetch gem')
-        console.error('Error fetching gem:', err)
-      } finally {
-        if (!ignore) setLoading(false)
-      }
-    }
+  const canWrite = hasPermission(MODULES.INVENTORY, PERMISSION.WRITE)
 
-    fetchGem()
-    return () => {
-      ignore = true
-    }
-  }, [id])
-
-  if (!id) return <p>Invalid gem id</p>
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>{error}</p>
-  if (!item) return <p>Gem not found</p>
+  const details: [string, string | number][] = [
+    ['SKU', item.sku],
+    ['Stock type', STOCK_TYPE_LABELS[item.stockType]],
+    ['Ownership', OWNERSHIP_LABELS[item.ownership]],
+    ['Carat weight', item.caratWeight],
+    ['Color', item.color],
+    ['Clarity', item.clarity],
+    ['Cut', item.cut],
+    ['Cost', formatCurrency(item.cost)],
+    ['Price', formatCurrency(item.price)],
+    ['Status', STATUS_LABELS[item.status]],
+  ]
 
   return (
-    <div>
-      <Link to={BASE_PATH}>Back to list</Link>
-      <h1>{item.name}</h1>
-      <p>SKU: {item.sku}</p>
-      <p>Stock Type: {stockTypeLabel(item.stockType)}</p>
-      <p>Carat Weight: {item.caratWeight}</p>
-      <p>Color: {item.color}</p>
-      <p>Clarity: {item.clarity}</p>
-      <p>Ownership: {ownershipLabel(item.ownership)}</p>
-      <p>Cut: {item.cut}</p>
-      <p>Cost: ${item.cost.toFixed(2)}</p>
-      <p>Price: ${item.price.toFixed(2)}</p>
-      <p>Status: {item.status}</p>
-      {hasPermission(MODULES.INVENTORY, PERMISSION.WRITE) && (
-        <p>
-          <Link to={`/inventory/${item.id}/edit`}>Edit this gem</Link>
-        </p>
-      )}
-    </div>
+    <>
+      <PageHeader
+        title={item.name}
+        backTo={ROUTES.inventory.gems.list}
+        backLabel="Back to list"
+        actions={
+          canWrite && (
+            <Link to={ROUTES.inventory.gems.edit(item.id)} className="detail-edit-link">
+              <Pencil size={14} /> Edit
+            </Link>
+          )
+        }
+      />
+
+      <dl className="detail-grid">
+        {details.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </>
   )
 }

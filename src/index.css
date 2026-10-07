@@ -1,14 +1,19 @@
 /* ==========================================================
-   Brand colors: change these two (and their hover shades) to
-   re-theme the entire app. Nothing else hardcodes a brand color.
+   Brand colors: a single terracotta hue family. Primary/secondary
+   are not different colors -- they're different shades of the same
+   terracotta, used to signal effectiveness/emphasis (primary = the
+   strongest, most "effective" action; secondary = a calmer, lighter
+   shade for lower-emphasis actions). Change these to re-theme the
+   app. Nothing else hardcodes a brand color.
    ========================================================== */
 :root {
-  --color-primary: #16213c; /* midnight navy */
-  --color-primary-hover: #090d18; /* navy shaded -60% (toward black) */
-  --color-secondary: #b84e2e; /* terracotta shaded -10% (toward black) */
-  --color-secondary-hover: #a34629; /* terracotta shaded -20% */
+  --color-primary: #8a3419; /* terracotta shaded -35% (toward black) -- highest emphasis */
+  --color-primary-hover: #6b2812; /* terracotta shaded -50% (toward black) */
+  --color-secondary: #b84e2e; /* terracotta base shade -- secondary emphasis */
+  --color-secondary-hover: #a34629; /* terracotta shaded -10% */
   --color-on-brand: #ffffff; /* text on top of primary */
   --color-on-secondary: #ffffff; /* text on top of secondary/accent */
+  --color-danger: #dc2626; /* errors */
 
   /* Neutrals */
   --bg: #f6f7f9;
@@ -19,6 +24,7 @@
   --link: var(--color-primary);
 
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--text);
   background: var(--bg);
@@ -34,12 +40,16 @@
     --text: #e8eaed;
     --hover: #272b32;
     --link: #d6795c; /* terracotta tinted +20%, lighter so links stay readable on dark */
+    --color-danger: #f87171;
 
-    /* Midnight navy tinted +30%/+45% toward white -- the dark base is
-       nearly invisible against a dark surface, so dark mode uses the
-       lighter end of the same -60%..+30% scale. */
-    --color-primary: #5c6477;
-    --color-primary-hover: #7f8594;
+    /* Terracotta tinted toward white -- the darkest shade is nearly
+       invisible against a dark surface, so dark mode shifts the whole
+       primary/secondary pair up the same scale while keeping primary
+       the stronger (more "effective") of the two. */
+    --color-primary: #e08a62;
+    --color-primary-hover: #eba888;
+    --color-secondary: #c1663f;
+    --color-secondary-hover: #d6795c;
   }
 }
 
@@ -50,8 +60,11 @@
   --text: #e8eaed;
   --hover: #272b32;
   --link: #d6795c;
-  --color-primary: #5c6477;
-  --color-primary-hover: #7f8594;
+  --color-danger: #f87171;
+  --color-primary: #e08a62;
+  --color-primary-hover: #eba888;
+  --color-secondary: #c1663f;
+  --color-secondary-hover: #d6795c;
 }
 
 * {
@@ -76,12 +89,12 @@ button {
   border: none;
   border-radius: 6px;
   font: inherit;
-  background: var(--color-primary);
-  color: var(--color-on-brand);
+  /* background: var(--color-primary); */
+  color: var(--color-primary);
 }
 
 button:hover {
-  background: var(--color-primary-hover);
+  background: var(--text);
 }
 
 button.secondary {
@@ -90,7 +103,7 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background: var(--color-secondary-hover);
+  background: var(--text);
 }
 
 :focus-visible {
@@ -106,7 +119,7 @@ table {
   border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
-  font-size: 0.9rem;
+  font-size: 14px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
@@ -185,4 +198,136 @@ tbody tr:hover {
 
 .spin {
   animation: spin 0.8s linear infinite;
+}
+
+/* ---- Shared page pieces (components/common) ---- */
+.page-status {
+  margin: 1rem 0;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.page-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 40%, var(--border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-danger) 10%, var(--surface));
+  color: var(--text);
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.page-header__title {
+  margin: 0.25rem 0 0;
+  font-size: 1.4rem;
+}
+
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: var(--color-on-brand);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.detail-edit-link:hover {
+  background: var(--color-primary-hover);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 0;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.detail-grid dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.6;
+}
+
+.detail-grid dd {
+  margin: 0.15rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.form-field__control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-field__control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-field input,
+.form-field select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.form-field--invalid input,
+.form-field--invalid select {
+  border-color: var(--color-danger);
+}
+
+.form-field__error {
+  color: var(--color-danger);
+  font-size: 0.8rem;
+}
+
+.error-boundary {
+  max-width: 420px;
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
 }
