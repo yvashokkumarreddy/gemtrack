@@ -40,7 +40,7 @@
 
 .app-header__title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;

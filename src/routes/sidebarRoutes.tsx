@@ -34,4 +34,17 @@ export const sidebarRoutes: SidebarGroup[] = [
       },
     ],
   },
+  {
+    label: 'Archive Inventory',
+    icon: Package,
+    children: [
+      {
+        label: 'Archived Gems',
+        path: ROUTES.inventory.gems.archivelist,
+        icon: Gem,
+        module: MODULES.ARCHIVE,
+        minLevel: PERMISSION.READ,
+      },
+    ],
+  },
 ]

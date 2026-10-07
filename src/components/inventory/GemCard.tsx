@@ -8,9 +8,10 @@ import { formatCurrency } from '@/utils/currency'
 interface GemCardProps {
   item: GemItem
   canWrite: boolean
+  mode?: 'active' | 'archived'
 }
 
-export function GemCard({ item, canWrite }: GemCardProps) {
+export function GemCard({ item, canWrite, mode = 'active' }: GemCardProps) {
   return (
     <div className="gem-card">
       <div className="gem-card__header">
@@ -49,7 +50,7 @@ export function GemCard({ item, canWrite }: GemCardProps) {
 
       <div className="gem-card__footer">
         <span className="gem-card__price">{formatCurrency(item.price)}</span>
-        <GemActions item={item} canWrite={canWrite} />
+        <GemActions item={item} canWrite={canWrite} mode={mode} />
       </div>
     </div>
   )

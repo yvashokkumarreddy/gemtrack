@@ -35,14 +35,36 @@ export async function getGem(id: string, signal?: AbortSignal): Promise<GemItem>
   return data
 }
 
+// A gem that's sold is out of stock, so it moves to the archive on its own --
+// no separate "archive this" step needed once it's marked sold.
+function isOutOfStock(status: CreateGemInput['status'] | undefined): boolean {
+  return status === 'sold'
+}
+
 export async function createGem(input: CreateGemInput): Promise<GemItem> {
-  const { data } = await api.post<GemItem>(apiUrls.gems.list, input)
+  const { data } = await api.post<GemItem>(apiUrls.gems.list, {
+    ...input,
+    archived: isOutOfStock(input.status),
+  })
   return data
 }
 
 // The backend accepts PATCH (partial update), not PUT.
 export async function updateGem(id: string, input: UpdateGemInput): Promise<GemItem> {
-  const { data } = await api.patch<GemItem>(apiUrls.gems.detail(id), input)
+  const payload = isOutOfStock(input.status) ? { ...input, archived: true } : input
+  const { data } = await api.patch<GemItem>(apiUrls.gems.detail(id), payload)
+  return data
+}
+
+// Archiving is a soft delete: the gem moves out of the active inventory list
+// and into the Archive module, but stays in the database and can be restored.
+export async function archiveGem(id: string): Promise<GemItem> {
+  const { data } = await api.patch<GemItem>(apiUrls.gems.detail(id), { archived: true })
+  return data
+}
+
+export async function restoreGem(id: string): Promise<GemItem> {
+  const { data } = await api.patch<GemItem>(apiUrls.gems.detail(id), { archived: false })
   return data
 }
 

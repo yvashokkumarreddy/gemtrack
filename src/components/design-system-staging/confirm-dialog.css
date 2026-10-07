@@ -1,0 +1,61 @@
+.confirm-dialog {
+  width: calc(100% - 2rem);
+  max-width: 420px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-dialog__body {
+  padding: 1.5rem;
+}
+
+.confirm-dialog__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.confirm-dialog__message {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+/* These override the global primary-colored button style */
+.confirm-dialog__cancel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.confirm-dialog__cancel:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.confirm-dialog__confirm--danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.confirm-dialog__confirm--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-danger) 85%, black);
+}
+
+.confirm-dialog button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

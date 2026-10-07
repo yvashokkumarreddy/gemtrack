@@ -11,14 +11,15 @@ interface GemRowProps {
   item: GemItem
   columns: readonly GemColumn[] // only the columns the user has switched on
   canWrite: boolean
+  mode?: 'active' | 'archived'
 }
 
-export function GemRow({ item, columns, canWrite }: GemRowProps) {
+export function GemRow({ item, columns, canWrite, mode = 'active' }: GemRowProps) {
   const cells: Record<GemColumnKey, ReactNode> = {
     sku: <Link to={ROUTES.inventory.gems.detail(item.id)}>{item.sku}</Link>,
     name: item.name,
     stockType: STOCK_TYPE_LABELS[item.stockType],
-    caratWeight: item.caratWeight,
+    carats: item.caratWeight,
     color: item.color,
     clarity: item.clarity,
     ownership: OWNERSHIP_LABELS[item.ownership],
@@ -35,7 +36,7 @@ export function GemRow({ item, columns, canWrite }: GemRowProps) {
         </td>
       ))}
       <td>
-        <GemActions item={item} canWrite={canWrite} />
+        <GemActions item={item} canWrite={canWrite} mode={mode} />
       </td>
     </tr>
   )

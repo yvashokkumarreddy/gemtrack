@@ -2,7 +2,7 @@ import { keepPreviousData, skipToken, useMutation, useQuery, useQueryClient } fr
 import { toast } from 'react-toastify'
 import { cacheTimes } from '@/queries/cacheTimes'
 import { queryKeys } from '@/queries/keys'
-import { createGem, deleteGem, getGem, getGems, updateGem } from '@/services/gemService'
+import { archiveGem, createGem, deleteGem, getGem, getGems, restoreGem, updateGem } from '@/services/gemService'
 import type { GemListParams, UpdateGemInput } from '@/types/gem'
 
 export function useGems(params: GemListParams) {
@@ -47,6 +47,32 @@ export function useUpdateGem() {
       queryClient.setQueryData(queryKeys.gems.detail(gem.id), gem)
       await queryClient.invalidateQueries({ queryKey: queryKeys.gems.lists() })
       toast.success(`${gem.sku} updated`)
+    },
+  })
+}
+
+export function useArchiveGem() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: archiveGem,
+    onSuccess: async (gem) => {
+      queryClient.setQueryData(queryKeys.gems.detail(gem.id), gem)
+      await queryClient.invalidateQueries({ queryKey: queryKeys.gems.lists() })
+      toast.success(`${gem.sku} archived`)
+    },
+  })
+}
+
+export function useRestoreGem() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: restoreGem,
+    onSuccess: async (gem) => {
+      queryClient.setQueryData(queryKeys.gems.detail(gem.id), gem)
+      await queryClient.invalidateQueries({ queryKey: queryKeys.gems.lists() })
+      toast.success(`${gem.sku} restored`)
     },
   })
 }

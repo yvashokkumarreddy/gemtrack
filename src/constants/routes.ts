@@ -7,6 +7,10 @@ export const ROUTES = {
       create: '/inventory/gems/new',
       detail: (id: string) => `/inventory/gems/${id}`,
       edit: (id: string) => `/inventory/gems/${id}/edit`,
+      // Deliberately not nested under `/inventory/gems` -- the header's page
+      // title match is a startsWith() on the sidebar paths, and a nested path
+      // would match the "Gem Inventory" entry first.
+      archivelist: '/inventory/archive/gems',
     },
   },
 } as const

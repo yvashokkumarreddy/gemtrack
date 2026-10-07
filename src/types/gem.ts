@@ -15,9 +15,10 @@ export interface GemItem {
   cost: number
   price: number
   status: GemStatus
+  archived: boolean
 }
 
-export type CreateGemInput = Omit<GemItem, 'id'>
+export type CreateGemInput = Omit<GemItem, 'id' | 'archived'>
 export type UpdateGemInput = Partial<CreateGemInput>
 export type GemListItem = Pick<
   GemItem,
@@ -33,6 +34,7 @@ export interface GemListParams {
   ownership?: GemOwnership
   stockType?: GemStockType
   sort?: string
+  archived?: boolean
 }
 
 export interface Paginated<T> {

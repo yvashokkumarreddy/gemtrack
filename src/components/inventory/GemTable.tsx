@@ -6,9 +6,10 @@ interface GemTableProps {
   items: GemItem[]
   columns: readonly GemColumn[]
   canWrite: boolean
+  mode?: 'active' | 'archived'
 }
 
-export function GemTable({ items, columns, canWrite }: GemTableProps) {
+export function GemTable({ items, columns, canWrite, mode = 'active' }: GemTableProps) {
   return (
     <table>
       <thead>
@@ -23,7 +24,7 @@ export function GemTable({ items, columns, canWrite }: GemTableProps) {
       </thead>
       <tbody>
         {items.map((item) => (
-          <GemRow key={item.id} item={item} columns={columns} canWrite={canWrite} />
+          <GemRow key={item.id} item={item} columns={columns} canWrite={canWrite} mode={mode} />
         ))}
       </tbody>
     </table>

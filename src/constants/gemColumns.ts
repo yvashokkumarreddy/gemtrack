@@ -2,7 +2,7 @@ export const GEM_COLUMN_KEYS = [
   'sku',
   'name',
   'stockType',
-  'caratWeight',
+  'carats',
   'color',
   'clarity',
   'ownership',
@@ -22,14 +22,14 @@ export interface GemColumn {
 
 export const GEM_COLUMNS: readonly GemColumn[] = [
   { key: 'sku', label: 'SKU', locked: true },
-  { key: 'name', label: 'Name' },
+  { key: 'name', label: 'Name', locked: true },
   { key: 'stockType', label: 'Stock Type' },
-  { key: 'caratWeight', label: 'Carat Weight', align: 'right' },
+  { key: 'carats', label: 'Carats' },
   { key: 'color', label: 'Color' },
   { key: 'clarity', label: 'Clarity' },
   { key: 'ownership', label: 'Ownership' },
   { key: 'cut', label: 'Cut' },
-  { key: 'price', label: 'Price', align: 'right' },
+  { key: 'price', label: 'Price'},
   { key: 'status', label: 'Status' },
 ]
 
@@ -37,7 +37,7 @@ export const DEFAULT_GEM_COLUMNS: Record<GemColumnKey, boolean> = {
   sku: true,
   name: true,
   stockType: true,
-  caratWeight: true,
+  carats: true,
   color: true,
   clarity: true,
   ownership: true,

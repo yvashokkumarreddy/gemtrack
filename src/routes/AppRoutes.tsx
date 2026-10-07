@@ -14,6 +14,7 @@ const LoginPage = lazyRetry(() => import('@/pages/public/LoginPage'), 'LoginPage
 const InventoryDetailPage = lazyRetry(() => import('@/pages/inventory/InventoryDetailPage'), 'InventoryDetailPage')
 const InventoryEditPage = lazyRetry(() => import('@/pages/inventory/InventoryEditPage'), 'InventoryEditPage')
 const InventoryCreatePage = lazyRetry(() => import('@/pages/inventory/InventoryCreatePage'), 'InventoryCreatePage')
+const ArchiveListPage = lazyRetry(() => import('@/pages/inventory/ArchiveListPage'), 'ArchiveListPage')
 
 const gems = ROUTES.inventory.gems
 
@@ -36,6 +37,14 @@ export function AppRoutes() {
           element={
             <ProtectedRoute module={MODULES.INVENTORY} minLevel={PERMISSION.READ}>
               <InventoryListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={gems.archivelist}
+          element={
+            <ProtectedRoute module={MODULES.ARCHIVE} minLevel={PERMISSION.READ}>
+              <ArchiveListPage />
             </ProtectedRoute>
           }
         />

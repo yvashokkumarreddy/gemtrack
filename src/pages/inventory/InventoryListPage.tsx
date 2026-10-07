@@ -20,9 +20,15 @@ import type { GemListParams } from '@/types/gem'
 import { hasPermission } from '@/utils/auth'
 import './inventory.css'
 
-export function InventoryListPage() {
+interface InventoryListPageProps {
+  /** 'archived' renders the Archive module's read-mostly view of archived gems */
+  mode?: 'active' | 'archived'
+}
+
+export function InventoryListPage({ mode = 'active' }: InventoryListPageProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const isArchived = mode === 'archived'
 
   // Client state (Redux): what the user asked to see
   const filters = useAppSelector((state) => state.inventoryFilters)
@@ -30,7 +36,8 @@ export function InventoryListPage() {
   const viewMode = useAppSelector((state) => state.userPreferences.viewMode)
   const savedColumns = useAppSelector((state) => state.tablePreferences.gemColumns)
 
-  const canWrite = hasPermission(MODULES.INVENTORY, PERMISSION.WRITE)
+  const module = isArchived ? MODULES.ARCHIVE : MODULES.INVENTORY
+  const canWrite = hasPermission(module, PERMISSION.WRITE)
   const columns = useMemo(() => visibleGemColumns(savedColumns), [savedColumns])
 
   // Don't call the API on every keystroke
@@ -45,8 +52,9 @@ export function InventoryListPage() {
       status: filters.status === ALL ? undefined : filters.status,
       ownership: filters.ownership === ALL ? undefined : filters.ownership,
       stockType: filters.stockType === ALL ? undefined : filters.stockType,
+      archived: isArchived,
     }),
-    [page, pageSize, search, filters.status, filters.ownership, filters.stockType]
+    [page, pageSize, search, filters.status, filters.ownership, filters.stockType, isArchived]
   )
 
   const { data, isPending, isError, isFetching, isPlaceholderData, refetch } = useGems(params)
@@ -58,14 +66,14 @@ export function InventoryListPage() {
   }, [isPlaceholderData, page, totalPages, dispatch])
 
   return (
-    <>
+    <div className="inventory-page">
       <div className="inventory-toolbar">
         <GemFilters refreshing={isFetching} onRefresh={() => void refetch()} />
 
         <div className="inventory-toolbar__right">
           {viewMode === 'list' && <GemColumnMenu />}
-          <ViewToggle value={viewMode} onChange={(mode) => dispatch(setViewMode(mode))} />
-          {canWrite && (
+          <ViewToggle value={viewMode} onChange={(next) => dispatch(setViewMode(next))} />
+          {canWrite && !isArchived && (
             <button
               type="button"
               className="inventory-toolbar__add"
@@ -83,20 +91,26 @@ export function InventoryListPage() {
 
       {data && (
         <>
-          {/* While the next page loads, keep the old rows on screen, slightly faded */}
+          {/* While the next page loads, keep the old rows on screen, slightly faded.
+              This is the scrollable region: the toolbar above and the pagination
+              below stay put while only the rows scroll. */}
           <div className={isPlaceholderData ? 'inventory-results inventory-results--stale' : 'inventory-results'}>
             {viewMode === 'list' ? (
-              <GemTable items={data.data} columns={columns} canWrite={canWrite} />
+              <GemTable items={data.data} columns={columns} canWrite={canWrite} mode={mode} />
             ) : (
               <div className="gem-grid">
                 {data.data.map((item) => (
-                  <GemCard key={item.id} item={item} canWrite={canWrite} />
+                  <GemCard key={item.id} item={item} canWrite={canWrite} mode={mode} />
                 ))}
               </div>
             )}
-          </div>
 
-          {data.total === 0 && <p className="inventory-empty">No gems match these filters.</p>}
+            {data.total === 0 && (
+              <p className="inventory-empty">
+                {isArchived ? 'No archived gems match these filters.' : 'No gems match these filters.'}
+              </p>
+            )}
+          </div>
 
           {data.total > 0 && (
             <Pagination
@@ -111,6 +125,6 @@ export function InventoryListPage() {
           )}
         </>
       )}
-    </>
+    </div>
   )
 }

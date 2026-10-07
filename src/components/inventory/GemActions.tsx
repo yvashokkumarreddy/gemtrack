@@ -1,56 +1,109 @@
-import { Eye, Pencil, Trash2 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { ArchiveRestore, Eye, Pencil, Trash2 } from 'lucide-react'
+import { ConfirmDialog } from '@/components/design-system-staging/ConfirmDialog'
+import {
+  DropdownMenu,
+  type DropdownMenuItem,
+} from '@/components/design-system-staging/DropdownMenu'
 import { ROUTES } from '@/constants/routes'
-import { useDeleteGem } from '@/queries/useGems'
+import { useArchiveGem, useDeleteGem, useRestoreGem } from '@/queries/useGems'
 import type { GemItem } from '@/types/gem'
 
 interface GemActionsProps {
   item: GemItem
   canWrite: boolean
+  /** 'archived' renders Restore instead of Edit/Delete, for the Archive module's list */
+  mode?: 'active' | 'archived'
 }
 
-export function GemActions({ item, canWrite }: GemActionsProps) {
-  // On success the mutation refreshes the lists by itself and shows a toast;
-  // on failure the API client shows the error toast. Nothing to wire up here.
-  const deleteGem = useDeleteGem()
+export function GemActions({ item, canWrite, mode = 'active' }: GemActionsProps) {
+  const [confirming, setConfirming] = useState(false)
 
-  const handleDelete = () => {
-    if (!window.confirm(`Delete ${item.sku} - ${item.name}? This can't be undone.`)) return
-    deleteGem.mutate(item.id)
-  }
+  // On success each mutation refreshes the lists and shows a toast; on failure
+  // the API client shows the error toast. The component only asks and waits.
+  const archiveGem = useArchiveGem()
+  const deleteGem = useDeleteGem()
+  const restoreGem = useRestoreGem()
+
+  const isArchived = mode === 'archived'
+
+  const items: DropdownMenuItem[] = [
+    {
+      key: 'view',
+      label: 'View details',
+      icon: <Eye size={16} />,
+      to: ROUTES.inventory.gems.detail(item.id),
+    },
+    {
+      key: 'edit',
+      label: 'Edit gem',
+      icon: <Pencil size={16} />,
+      to: ROUTES.inventory.gems.edit(item.id),
+      hidden: isArchived || !canWrite,
+    },
+    isArchived
+      ? {
+          key: 'restore',
+          label: 'Restore',
+          icon: <ArchiveRestore size={16} />,
+          hidden: !canWrite,
+          onSelect: () => setConfirming(true),
+        }
+      : {
+          key: 'delete',
+          label: 'Delete',
+          icon: <Trash2 size={16} />,
+          danger: true,
+          hidden: !canWrite,
+          onSelect: () => setConfirming(true),
+        },
+  ]
+
+  const busy = archiveGem.isPending || deleteGem.isPending || restoreGem.isPending
 
   return (
-    <div className="gem-actions">
-      <Link
-        to={ROUTES.inventory.gems.detail(item.id)}
-        className="gem-actions__btn"
-        aria-label="View gem details"
-        title="View"
-      >
-        <Eye size={16} />
-      </Link>
-      {canWrite && (
-        <>
-          <Link
-            to={ROUTES.inventory.gems.edit(item.id)}
-            className="gem-actions__btn"
-            aria-label="Edit gem"
-            title="Edit"
-          >
-            <Pencil size={16} />
-          </Link>
-          <button
-            type="button"
-            className="gem-actions__btn gem-actions__btn--danger"
-            aria-label="Delete gem"
-            title="Delete"
-            onClick={handleDelete}
-            disabled={deleteGem.isPending}
-          >
-            <Trash2 size={16} />
-          </button>
-        </>
+    <>
+      <DropdownMenu label={`Actions for ${item.sku}`} items={items} />
+
+      {isArchived ? (
+        <ConfirmDialog
+          open={confirming}
+          title="Restore gem?"
+          message={
+            <>
+              <strong>
+                {item.sku} - {item.name}
+              </strong>{' '}
+              will move back into the active inventory list.
+            </>
+          }
+          confirmLabel="Restore"
+          loading={busy}
+          onClose={() => setConfirming(false)}
+          onConfirm={() => restoreGem.mutate(item.id, { onSettled: () => setConfirming(false) })}
+        />
+      ) : (
+        <ConfirmDialog
+          open={confirming}
+          title="Delete gem?"
+          message={
+            <>
+              <strong>
+                {item.sku} - {item.name}
+              </strong>{' '}
+              will be permanently removed and can&apos;t be recovered. If you might need it again, archive it
+              instead -- it&apos;ll be hidden from the inventory list but can be restored later.
+            </>
+          }
+          confirmLabel="Delete permanently"
+          destructive
+          secondaryLabel="Archive instead"
+          onSecondary={() => archiveGem.mutate(item.id, { onSettled: () => setConfirming(false) })}
+          loading={busy}
+          onClose={() => setConfirming(false)}
+          onConfirm={() => deleteGem.mutate(item.id, { onSettled: () => setConfirming(false) })}
+        />
       )}
-    </div>
+    </>
   )
 }

@@ -1,5 +1,6 @@
 export const MODULES = {
   INVENTORY: 'inventory',
+  ARCHIVE: 'archive',
 } as const
 
 export type ModuleKey = (typeof MODULES)[keyof typeof MODULES]

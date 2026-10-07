@@ -1,12 +1,16 @@
 /* ==========================================================
-   Brand colors: change these two (and their hover shades) to
-   re-theme the entire app. Nothing else hardcodes a brand color.
+   Brand colors: a single terracotta hue family. Primary/secondary
+   are not different colors -- they're different shades of the same
+   terracotta, used to signal effectiveness/emphasis (primary = the
+   strongest, most "effective" action; secondary = a calmer, lighter
+   shade for lower-emphasis actions). Change these to re-theme the
+   app. Nothing else hardcodes a brand color.
    ========================================================== */
 :root {
-  --color-primary: #16213c; /* midnight navy */
-  --color-primary-hover: #090d18; /* navy shaded -60% (toward black) */
-  --color-secondary: #b84e2e; /* terracotta shaded -10% (toward black) */
-  --color-secondary-hover: #a34629; /* terracotta shaded -20% */
+  --color-primary: #8a3419; /* terracotta shaded -35% (toward black) -- highest emphasis */
+  --color-primary-hover: #6b2812; /* terracotta shaded -50% (toward black) */
+  --color-secondary: #b84e2e; /* terracotta base shade -- secondary emphasis */
+  --color-secondary-hover: #a34629; /* terracotta shaded -10% */
   --color-on-brand: #ffffff; /* text on top of primary */
   --color-on-secondary: #ffffff; /* text on top of secondary/accent */
   --color-danger: #dc2626; /* errors */
@@ -38,11 +42,14 @@
     --link: #d6795c; /* terracotta tinted +20%, lighter so links stay readable on dark */
     --color-danger: #f87171;
 
-    /* Midnight navy tinted +30%/+45% toward white -- the dark base is
-       nearly invisible against a dark surface, so dark mode uses the
-       lighter end of the same -60%..+30% scale. */
-    --color-primary: #5c6477;
-    --color-primary-hover: #7f8594;
+    /* Terracotta tinted toward white -- the darkest shade is nearly
+       invisible against a dark surface, so dark mode shifts the whole
+       primary/secondary pair up the same scale while keeping primary
+       the stronger (more "effective") of the two. */
+    --color-primary: #e08a62;
+    --color-primary-hover: #eba888;
+    --color-secondary: #c1663f;
+    --color-secondary-hover: #d6795c;
   }
 }
 
@@ -54,8 +61,10 @@
   --hover: #272b32;
   --link: #d6795c;
   --color-danger: #f87171;
-  --color-primary: #5c6477;
-  --color-primary-hover: #7f8594;
+  --color-primary: #e08a62;
+  --color-primary-hover: #eba888;
+  --color-secondary: #c1663f;
+  --color-secondary-hover: #d6795c;
 }
 
 * {
@@ -80,12 +89,12 @@ button {
   border: none;
   border-radius: 6px;
   font: inherit;
-  background: var(--color-primary);
-  color: var(--color-on-brand);
+  /* background: var(--color-primary); */
+  color: var(--color-primary);
 }
 
 button:hover {
-  background: var(--color-primary-hover);
+  background: var(--text);
 }
 
 button.secondary {
@@ -94,7 +103,7 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background: var(--color-secondary-hover);
+  background: var(--text);
 }
 
 :focus-visible {
@@ -110,7 +119,7 @@ table {
   border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
-  font-size: 0.9rem;
+  font-size: 14px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
